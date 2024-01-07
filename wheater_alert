@@ -1,0 +1,23 @@
+import requests
+import json
+
+KOTA = "JAKARTA"
+OWN_API = "token api"
+
+api_response = requests.get('https://api.openweathermap.org/data/2.5/weather?q={}&appid={}'.format(KOTA,OWN_API))
+#print(api_response.status_code)
+data = api_response.text
+parse_json = json.loads(data)
+temp = int(parse_json["main"]["temp"] - 273.15)
+location = parse_json["name"]
+humidity = parse_json["main"]["humidity"]
+suhu = "Suhu Di " + (location) + " Saat ini: " + str(temp) + " °C" + "\nKelembapan Di " + (location) + " Saat ini: " + str(humidity)
+print(suhu)
+
+
+TOKEN = "token api telegram"
+chat_id = "chat id telegram"
+text = suhu
+url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={chat_id}&text={text}"
+r = requests.get(url)
+
